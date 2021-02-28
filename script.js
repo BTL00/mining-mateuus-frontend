@@ -25,11 +25,12 @@ const toggleMode = () => {
   
 
 const updateTitleOnce = (id) => {
-    document.title = `${counts[id]} - kopalnia` 
+    document.title = `${counts[id]} - kopalnia` ;
 }
 
 const updateTitle  = (id) => {    
-    setInterval(updateTitleOnce(id), 15000);
+    updateTitleOnce(id);
+    setInterval(updateTitleOnce, 5000, id);
 }
 
 const testJsonAll = `{"users":[{"id":1,"name":"Mateusz"},{"id":2,"name":"Piotr"}],"shares":[]}`;
@@ -44,8 +45,6 @@ let counts = [];
 const getUsers = async () => {
     const response = await fetch(`https://mining.mateu.us/all`);
     const myJson = await response.json(); 
-    console.log("getUsers");
-    console.log(myJson);
     users = myJson.users;
 }
 
@@ -62,8 +61,6 @@ const getShareCounts = async () => {
         const element = document.getElementById(`shares_${e.id}`);
         counts[e.id] = myJson.length;
         element.innerHTML = counts[e.id];
-        console.log("getShareCounts");
-        console.log(myJson);
     });
 }
 
