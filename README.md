@@ -1,1 +1,1 @@
-# mining-mateuus-frontend
+# mining-zapisywacz-frontend
