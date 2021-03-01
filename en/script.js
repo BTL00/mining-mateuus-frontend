@@ -78,7 +78,7 @@ const getTable = async () => {
     const response = await fetch(`/all`);
     const myJson = await response.json(); 
     myJson.shares.forEach(element => {
-        tableElement.innerHTML += getRowHTML(element.id, element.date)
+        tableElement.innerHTML += getRowHTML(element.user, element.date)
     });
 }
 
