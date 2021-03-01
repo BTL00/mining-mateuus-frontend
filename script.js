@@ -25,7 +25,12 @@ const toggleMode = () => {
   
 
 const updateTitleOnce = (id) => {
-    document.title = `${counts[id]} - kopalnia` ;
+    let all = 0;
+    counts.forEach((item,index) => {
+            all += item;
+    });
+    document.title = `${counts[id]}/${all} - kopalnia` ;
+    
 }
 
 const updateTitle  = (id) => {    
