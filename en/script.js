@@ -48,7 +48,7 @@ let users = [];
 let counts = [];
 
 const getUsers = async () => {
-    const response = await fetch(`https://mining.mateu.us/api/all`);
+    const response = await fetch(`/api/all`);
     const myJson = await response.json(); 
     users = myJson.users;
 }
@@ -61,7 +61,7 @@ const createCardsForUsers = () => {
 
 const getShareCounts = async () => {
     users.forEach(async e => {
-        const response = await fetch(`https://mining.mateu.us/api/user-shares?id=${e.id}`);
+        const response = await fetch(`/api/user-shares?id=${e.id}`);
         const myJson = await response.json(); 
         const element = document.getElementById(`shares_${e.id}`);
         counts[e.id] = myJson.length;
@@ -90,7 +90,7 @@ const jsonDiff = (json_new, json_old) => {
 
 
 const getTable = async () => {
-    const response = await fetch(`https://mining.mateu.us/api/all`);
+    const response = await fetch(`/api/all`);
     const myJson = await response.json(); 
 
     myJson.shares.forEach(element => {
@@ -101,7 +101,7 @@ const getTable = async () => {
 }
 
 const getTableIfDiff = async () => {
-    const response = await fetch(`https://mining.mateu.us/api/all`);
+    const response = await fetch(`/api/all`);
     const myJson = await response.json(); 
     let diffArr = jsonDiff(myJson.shares, tableJson.shares);
     diffArr.forEach(element => {
