@@ -48,7 +48,7 @@ let users = [];
 let counts = [];
 
 const getUsers = async () => {
-    const response = await fetch(`/all`);
+    const response = await fetch(`https://mining.mateu.us/api/all`);
     const myJson = await response.json(); 
     users = myJson.users;
 }
@@ -61,7 +61,7 @@ const createCardsForUsers = () => {
 
 const getShareCounts = async () => {
     users.forEach(async e => {
-        const response = await fetch(`/user-shares?id=${e.id}`);
+        const response = await fetch(`https://mining.mateu.us/api/user-shares?id=${e.id}`);
         const myJson = await response.json(); 
         const element = document.getElementById(`shares_${e.id}`);
         counts[e.id] = myJson.length;
@@ -74,12 +74,42 @@ const clearTable = () => {
     tableElement.innerHTML = "";
 }
 
+
+let tableJson = [];
+
+
+const jsonDiff = (json_new, json_old) => {
+    let toAdd = [];
+    if(json_new.length > tableJson.length) {
+        toAdd += json_new.filter((e, i) =>  {
+            return i >= tableJson.length;
+        });
+    }
+    return toAdd;
+}
+
+
 const getTable = async () => {
-    const response = await fetch(`/all`);
+    const response = await fetch(`https://mining.mateu.us/api/all`);
     const myJson = await response.json(); 
+
     myJson.shares.forEach(element => {
-        tableElement.innerHTML += getRowHTML(element.user, element.date)
+        tableElement.innerHTML += getRowHTML(element.id, element.date)
     });
+    
+
+}
+
+const getTableIfDiff = async () => {
+    const response = await fetch(`https://mining.mateu.us/api/all`);
+    const myJson = await response.json(); 
+    let diffArr = jsonDiff(myJson.shares, tableJson.shares);
+    diffArr.forEach(element => {
+        tableElement.innerHTML += getRowHTML(element.id, element.date)
+    });
+        tableJson = myJson;
+    
+
 }
 
 if(localStorage.getItem("dark-mode") == "true") {
@@ -89,15 +119,17 @@ if(localStorage.getItem("dark-mode") == "true") {
 
 const onTick = () => {
     getShareCounts();
-    clearTable();
-    getTable();
+    getTableIfDiff();
 }
+clearTable();
+getTable().then(
+    () => {
+        getUsers().then(() => {
+            createCardsForUsers();
+            onTick();
+            setInterval(onTick, 15000);
+        });
 
-getUsers().then(() => {
-    createCardsForUsers();
-    onTick();
-    setInterval(onTick, 15000);
-});
-
-
+    }
+)
 
