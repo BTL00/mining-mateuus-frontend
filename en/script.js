@@ -18,7 +18,7 @@ const toggleMode = () => {
 }
 
 const getUsers = async (users, errorDiv) => {
-    return fetch('https://mining.mateu.us/api/users').then(response => {
+    return fetch('api/users').then(response => {
         errorDiv.classList.add('d-none')
         return response.json()
     }).catch(err => {
@@ -37,7 +37,7 @@ const createCardsForUsers = (users, userListDiv) => {
 const updateShareCounts = async (users) => {
     users.forEach(async user => {
         const element = document.getElementById(`shares_${user.id}`)
-        element.innerHTML = (await fetch(`https://mining.mateu.us/api/share-count?id=${user.id}`).then(response => response.json()))
+        element.innerHTML = (await fetch(`api/share-count?id=${user.id}`).then(response => response.json()))
     })
 }
 
