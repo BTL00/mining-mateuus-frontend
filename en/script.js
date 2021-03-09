@@ -10,6 +10,7 @@ const createCardHTML = (id, username,) => {
 </div></div>`;
 }
 
+// skipcq: JS-0128
 const toggleMode = () => {
     const element = document.body;
     element.classList.toggle("dark-mode");
@@ -21,7 +22,7 @@ const getUsers = async (users, errorDiv) => {
     return fetch('api/users').then(response => {
         errorDiv.classList.add('d-none')
         return response.json()
-    }).catch(err => {
+    }).catch(() => {
         errorDiv.classList.remove('d-none')
         return users
     })
